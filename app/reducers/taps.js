@@ -32,7 +32,8 @@ import {
   UPDATE_TAP_CONFIG,
   UPDATE_TAP_FIELD,
   UPDATE_TAPS,
-  UPDATE_FORM_VALIDATION
+  UPDATE_FORM_VALIDATION,
+  UPDATE_REP_METHOD_OPTION
 } from '../actions/taps';
 import { LOADED_KNOT, RESET_STORE, LOADED_KNOT_JSON } from '../actions/knots';
 import type {
@@ -73,7 +74,8 @@ export function defaultState() {
     selectedTap: {
       name: '',
       image: '',
-      specImplementation: {}
+      specImplementation: {},
+      identifier: ''
     },
     schemaLoading: false,
     schemaLoaded: false,
@@ -83,6 +85,7 @@ export function defaultState() {
     schema: [],
     schemaUpdated: false,
     error: '',
+    usesLogBaseRepMethod: false,
     'tap-redshift': {
       valid: false,
       fieldValues: {
@@ -160,7 +163,7 @@ export function defaultState() {
 }
 
 export default function taps(state = defaultState(), action) {
-  const { schema } = state;
+  const { schema, usesLogBaseRepMethod } = state;
 
   switch (action.type) {
     case TAPS_LOADING:
@@ -247,7 +250,13 @@ export default function taps(state = defaultState(), action) {
             if (repMethodMetadata) {
               const repKey =
                 streamClone.metadata[indexToUpdate].metadata['replication-key'];
-              if (repKey) {
+
+              if (usesLogBaseRepMethod) {
+                streamClone.metadata[indexToUpdate].metadata[
+                  'replication-method'
+                ] =
+                  'LOG_BASED';
+              } else if (repKey) {
                 streamClone.metadata[indexToUpdate].metadata[
                   'replication-method'
                 ] =
@@ -262,7 +271,9 @@ export default function taps(state = defaultState(), action) {
             }
           }
 
-          if (streamClone.replication_key) {
+          if (usesLogBaseRepMethod) {
+            streamClone.replication_method = 'LOG_BASED';
+          } else if (streamClone.replication_key) {
             streamClone.replication_method = 'INCREMENTAL';
           } else {
             streamClone.replication_method = 'FULL_TABLE';
@@ -412,7 +423,10 @@ export default function taps(state = defaultState(), action) {
           valid: action.value
         })
       });
-
+    case UPDATE_REP_METHOD_OPTION:
+      return Object.assign({}, state, {
+        usesLogBaseRepMethod: action.usesLogBaseRepMethod
+      });
     case RESET_STORE:
       // Fact that objects are passed by reference makes this necessary, open to other suggestions
       return defaultState();

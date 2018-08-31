@@ -49,6 +49,7 @@ export const UPDATE_SCHEMA_LOGS = 'UPDATE_SCHEMA_LOGS';
 
 export const TAP_SELECTED = 'TAP_SELECTED';
 export const UPDATE_FORM_VALIDATION = 'UPDATE_FORM_VALIDATION';
+export const UPDATE_REP_METHOD_OPTION = 'UPDATE_REP_METHOD_OPTION';
 
 type actionType = {
   +type: string
@@ -237,6 +238,15 @@ export function updateFormValidation(tap: string, value: boolean) {
       type: UPDATE_FORM_VALIDATION,
       tap,
       value
+    });
+  };
+}
+
+export function updateLogBaseRepMethod(usesLogBaseRepMethod: boolean) {
+  return (dispatch: (action: actionType) => void) => {
+    dispatch({
+      type: UPDATE_REP_METHOD_OPTION,
+      usesLogBaseRepMethod
     });
   };
 }
