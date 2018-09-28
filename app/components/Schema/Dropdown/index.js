@@ -28,6 +28,7 @@ type Props = {
   columns: Array<string>,
   stream: { metadata?: Array<{}>, replication_key?: string },
   specImplementation: specImplementationPropType,
+  usesLogBaseRepMethod: boolean,
   handleChange: (field: string, index: string, value: boolean | string) => void
 };
 
@@ -47,6 +48,7 @@ export default class Dropdown extends Component<Props> {
   ) {
     const { replicationKey: repKeyMetadata = true } =
       specImplementation.usesMetadata || {};
+
     if (!repKeyMetadata) {
       return stream.replication_key;
     }
@@ -96,7 +98,7 @@ export default class Dropdown extends Component<Props> {
   }
 
   render() {
-    if (this.props.columns.length < 1) {
+    if (this.props.columns.length < 1 || this.props.usesLogBaseRepMethod) {
       return 'N/A';
     }
 

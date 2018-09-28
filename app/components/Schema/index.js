@@ -57,7 +57,8 @@ type Props = {
     schemaLogs: Array<string>,
     schemaUpdated: boolean,
     selectedTap: tapPropertiesType,
-    error?: string
+    error?: string,
+    usesLogBaseRepMethod: boolean
   },
   knotsStore: { knotName: string, uuid: string },
   editSchemaField: (
@@ -265,7 +266,8 @@ export default class Schema extends Component<Props, State> {
       schemaLoaded,
       schemaLogs,
       error,
-      schema
+      schema,
+      usesLogBaseRepMethod
     } = this.props.tapsStore;
 
     const { streamSelected } = this.state;
@@ -430,6 +432,7 @@ export default class Schema extends Component<Props, State> {
                                 specImplementation={
                                   selectedTap.specImplementation
                                 }
+                                usesLogBaseRepMethod={usesLogBaseRepMethod}
                               />
                             </td>
                           </tr>
