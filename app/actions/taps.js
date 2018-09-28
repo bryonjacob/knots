@@ -152,7 +152,8 @@ export function submitConfig(
   config: { start_date?: string },
   uuid: string,
   knotName: string,
-  skipDiscovery: ?boolean
+  skipDiscovery: ?boolean,
+  usesLogBaseRepMethod: boolean
 ) {
   return (dispatch: (action: actionType) => void) => {
     dispatch({
@@ -165,7 +166,8 @@ export function submitConfig(
       tapConfig,
       uuid,
       knot: knotName,
-      skipDiscovery
+      skipDiscovery,
+      usesLogBaseRepMethod
     };
 
     return axios
