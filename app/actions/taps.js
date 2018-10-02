@@ -50,6 +50,8 @@ export const UPDATE_SCHEMA_LOGS = 'UPDATE_SCHEMA_LOGS';
 export const TAP_SELECTED = 'TAP_SELECTED';
 export const UPDATE_FORM_VALIDATION = 'UPDATE_FORM_VALIDATION';
 export const UPDATE_REP_METHOD_OPTION = 'UPDATE_REP_METHOD_OPTION';
+export const DEACTIVATE_NAVIGATION = 'DEACTIVATE_NAVIGATION';
+export const ACTIVATE_NAVIGATION = 'ACTIVATE_NAVIGATION';
 
 type actionType = {
   +type: string
@@ -249,6 +251,22 @@ export function updateLogBaseRepMethod(usesLogBaseRepMethod: boolean) {
     dispatch({
       type: UPDATE_REP_METHOD_OPTION,
       usesLogBaseRepMethod
+    });
+  };
+}
+
+export function deactivateNavigation() {
+  return (dispatch: (action: actionType) => void) => {
+    dispatch({
+      type: DEACTIVATE_NAVIGATION
+    });
+  };
+}
+
+export function activateNavigation() {
+  return (dispatch: (action: actionType) => void) => {
+    dispatch({
+      type: ACTIVATE_NAVIGATION
     });
   };
 }
